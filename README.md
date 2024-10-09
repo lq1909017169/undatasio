@@ -28,7 +28,7 @@ Quick Start
 
 Let's illustrate how to use the UnDatasIO Python SDK with a simple example:
 
-.. code-block:: python
+```python
    from undatasio import UnDatasIO
 
    # 1. Initialize the UnDatasIO client
@@ -69,7 +69,7 @@ Let's illustrate how to use the UnDatasIO Python SDK with a simple example:
        print(f"Parsing results: {results.json()}")
    else:
        print(f"Failed to get parsing results: {results['msg']}")
-
+```
 API Reference
 ------------
 
