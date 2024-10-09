@@ -1,4 +1,4 @@
-**Read this in other languages: [English](README.md), [中文](README_zh.md).**
+**[English](README.md), [中文](README_ZH.md).**
 
 # UnDatasIO Python SDK Documentation
 
