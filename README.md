@@ -20,55 +20,55 @@ Installation
 
 You can easily install the UnDatasIO Python SDK using `pip`:
 
-.. code-block:: bash
-   pip install undatasio
-
+```bash
+pip install undatasio
+```
 Quick Start
 ------------
 
 Let's illustrate how to use the UnDatasIO Python SDK with a simple example:
 
 ```python
-   from undatasio import UnDatasIO
+from undatasio import UnDatasIO
 
-   # 1. Initialize the UnDatasIO client
-   client = UnDatasIO(token='your API key', task_name='your task name')
+# 1. Initialize the UnDatasIO client
+client = UnDatasIO(token='your API key', task_name='your task name')
 
-   # 2. Upload files
-   upload_response = client.upload(file_dir_path='./example_files')
-   if upload_response['code'] == 200:
-       print("File upload successful!")
-   else:
-       print(f"File upload failed: {upload_response['msg']}")
+# 2. Upload files
+upload_response = client.upload(file_dir_path='./example_files')
+if upload_response['code'] == 200:
+    print("File upload successful!")
+else:
+    print(f"File upload failed: {upload_response['msg']}")
 
-   # 3. View all uploaded files
-   upload_filename_response = client.show_upload()
-   if upload_filename_response['code'] == 200:
-       print(upload_filename_response.json())
-   else:
-       print(f"File upload failed: {upload_filename_response['msg']}")
+# 3. View all uploaded files
+upload_filename_response = client.show_upload()
+if upload_filename_response['code'] == 200:
+    print(upload_filename_response.json())
+else:
+    print(f"File upload failed: {upload_filename_response['msg']}")
 
-   # 4. Parse files
-   parse_response = client.parser(file_name_list=['example_file.pdf'])
-   if parse_response['code'] == 200:
-       print("File parsing successful")
-   else:
-       print(f"File parsing request failed: {parse_response['msg']}")
+# 4. Parse files
+parse_response = client.parser(file_name_list=['example_file.pdf'])
+if parse_response['code'] == 200:
+    print("File parsing successful")
+else:
+    print(f"File parsing request failed: {parse_response['msg']}")
 
-   # 5. View historical parsing results
-   parse_filename_response = client.show_version()
-   if parse_filename_response['code'] == 200:
-       print(parse_filename_response.json())
-   else:
-       print(f"File upload failed: {parse_filename_response['msg']}")
+# 5. View historical parsing results
+parse_filename_response = client.show_version()
+if parse_filename_response['code'] == 200:
+    print(parse_filename_response.json())
+else:
+    print(f"File upload failed: {parse_filename_response['msg']}")
 
 
-   # 6. View parsing results (assuming you know the version number is 'v1' and want to get the title and table information in the parsing results)
-   results = client.get_result_type(type_info=['title', 'table'], file_name='example_file.pdf', version='v1')
-   if results['code'] == 200:
-       print(f"Parsing results: {results.json()}")
-   else:
-       print(f"Failed to get parsing results: {results['msg']}")
+# 6. View parsing results (assuming you know the version number is 'v1' and want to get the title and table information in the parsing results)
+results = client.get_result_type(type_info=['title', 'table'], file_name='example_file.pdf', version='v1')
+if results['code'] == 200:
+    print(f"Parsing results: {results.json()}")
+else:
+    print(f"Failed to get parsing results: {results['msg']}")
 ```
 API Reference
 ------------
