@@ -2,7 +2,7 @@ import os
 from typing import Dict, List
 from langchain_core.documents import Document as lcDocument
 import requests
-from llama_index.legacy import Document
+from llama_index.core.schema import Document
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 
