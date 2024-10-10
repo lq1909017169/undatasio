@@ -1,7 +1,8 @@
 import os
 from typing import Dict, List
-
+from langchain_core.documents import Document as lcDocument
 import requests
+from llama_index.legacy import Document
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 
 
@@ -110,7 +111,7 @@ class UnDatasIO:
             return {"code": 403, "msg": f"{e}"}
 
     def get_result_type(
-        self, type_info: List, file_name: str, version: str
+            self, type_info: List, file_name: str, version: str
     ):
         """
         :param type_info: Please select from title, table, text, image, interline_equation
@@ -134,3 +135,60 @@ class UnDatasIO:
             return response.json()
         except requests.exceptions.RequestException as e:
             return {"code": 403, "msg": f"{e}"}
+
+    def get_result_to_langchain_document(
+            self, type_info: List, file_name: str, version: str
+    ) -> lcDocument:
+        """
+        :param type_info: Please select from title, table, text, image, interline_equation
+        :param file_name: file name
+        :param version: version
+        :return: langchain_core.Document
+        """
+        result = self.get_result_type(type_info, file_name, version)['data']
+        return lcDocument(
+            page_content=result,
+            metadata={
+                "source": f"{self.task_name}_{version}_{file_name}_[{','.join(type_info)}]"
+            },
+        )
+
+    def get_result_to_llama_index_document(
+            self, type_info: List, file_name: str, version: str
+    ) -> Document:
+        """
+        :param type_info: Please select from title, table, text, image, interline_equation
+        :param file_name: file name
+        :param version: version
+        :return: langchain_core.Document
+        """
+
+        result = self.get_result_type(type_info, file_name, version)['data']
+        return Document(
+            text=result,
+            extra_info={
+                "source": f"{self.task_name}_{version}_{file_name}_[{','.join(type_info)}]"
+            },
+        )
+
+
+# if __name__ == '__main__':
+#     undatasio_obj = UnDatasIO('025ae1da7598456daa802fef7873e31b')
+    # print(undatasio_obj.show_version())
+
+    # print(undatasio_obj.get_result_type(
+    #     ['text'],
+    #     '棉花标准仓单销售合同.pdf',
+    #     'v22')['data'])
+
+    # print(undatasio_obj.get_result_to_langchain_document(
+    #     ['text'],
+    #     '棉花标准仓单销售合同.pdf',
+    #     'v22'
+    # ))
+
+    # print(undatasio_obj.get_result_to_llama_index_document(
+    #     ['text'],
+    #     '棉花标准仓单销售合同.pdf',
+    #     'v22'
+    # ))

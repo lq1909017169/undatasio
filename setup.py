@@ -1,11 +1,14 @@
 from distutils.core import setup
 from setuptools import find_packages
 
-with open("README.rst", "r") as f:
+# with open("README.rst", "r") as f:
+#     long_description = f.read()
+
+with open("README.md", "r") as f:
     long_description = f.read()
 
 setup(name='undatasio',                      # 包名
-      version='0.1.6',                      # 版本号
+      version='0.1.7',                      # 版本号
       description='test pip upload',
       long_description=long_description,
       author='lily',
