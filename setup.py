@@ -14,7 +14,7 @@ setup(name='undatasio',                      # 包名
       author='lily',
       author_email='1909017169@qq.com',
       url='',
-      install_requires=["requests~=2.32.3", "requests_toolbelt==1.0.0"],	                # 依赖包会同时被安装
+      install_requires=["requests~=2.32.3", "requests_toolbelt==1.0.0", "llama_index", "langchain_core"],	                # 依赖包会同时被安装
       license='MIT',
       python_requires=">=3.8",  # 项目依赖的 Python 版本
       packages=find_packages())
