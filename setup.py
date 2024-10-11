@@ -1,11 +1,9 @@
+import pathlib
 from distutils.core import setup
 from setuptools import find_packages
 
-# with open("README.rst", "r") as f:
-#     long_description = f.read()
-
-with open("README.md", "r") as f:
-    long_description = f.read()
+here = pathlib.Path(__file__).parent.resolve()
+long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(name='undatasio',                      # 包名
       version='0.1.7',                      # 版本号
