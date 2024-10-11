@@ -5,15 +5,16 @@ import pathlib
 here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / 'README.md').read_text(encoding='utf-8')
 
-setup(name='undatasio',                      # 包名
-      version='0.1.7.2',                      # 版本号
+setup(name='undatasio',  # 包名
+      version='0.1.7.2',  # 版本号
       description='python sdk for the undatasio platform',
       long_description=long_description,
       long_description_content_type='text/markdown',
       author='1909017169',
       author_email='1909017169@qq.com',
       url='',
-      install_requires=["requests~=2.32.3", "requests_toolbelt==1.0.0", "llama_index", "langchain_core"],	                # 依赖包会同时被安装
+      install_requires=["requests~=2.32.3", "requests_toolbelt==1.0.0", "llama_index", "langchain_core"],  # 依赖包会同时被安装
       license='MIT',
       python_requires=">=3.10",  # 项目依赖的 Python 版本
-      packages=find_packages())
+      packages=find_packages()
+      )
