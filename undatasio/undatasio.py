@@ -170,25 +170,3 @@ class UnDatasIO:
                 "source": f"{self.task_name}_{version}_{file_name}_[{','.join(type_info)}]"
             },
         )
-
-
-# if __name__ == '__main__':
-#     undatasio_obj = UnDatasIO('025ae1da7598456daa802fef7873e31b')
-    # print(undatasio_obj.show_version())
-
-    # print(undatasio_obj.get_result_type(
-    #     ['text'],
-    #     '棉花标准仓单销售合同.pdf',
-    #     'v22')['data'])
-
-    # print(undatasio_obj.get_result_to_langchain_document(
-    #     ['text'],
-    #     '棉花标准仓单销售合同.pdf',
-    #     'v22'
-    # ))
-
-    # print(undatasio_obj.get_result_to_llama_index_document(
-    #     ['text'],
-    #     '棉花标准仓单销售合同.pdf',
-    #     'v22'
-    # ))
