@@ -166,7 +166,7 @@ class UnDatasIO:
         result = self.get_result_type(type_info, file_name, version)['data']
         return Document(
             text=result,
-            extra_info={
+            metadata={
                 "source": f"{self.task_name}_{version}_{file_name}_[{','.join(type_info)}]"
             },
         )
