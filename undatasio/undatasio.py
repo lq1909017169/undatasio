@@ -10,7 +10,7 @@ class UnDatasIO:
     def __init__(self, token: str, task_name: str = ""):
         self.token = token
         self.task_name = task_name
-        self.base_url = 'http://116.204.67.82:8087/api/api'
+        self.base_url = 'https://backend.undatas.io/api/api'
 
     def upload(self, file_dir_path: str) -> Dict:
         """
