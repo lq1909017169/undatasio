@@ -87,6 +87,7 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
+            print(response.text)
             if response.json()['code'] != 200:
                 return {"code": 403, "msg": response.json()['msg']}
             response.raise_for_status()
