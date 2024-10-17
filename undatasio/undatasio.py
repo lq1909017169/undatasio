@@ -137,6 +137,31 @@ class UnDatasIO:
         except requests.exceptions.RequestException as e:
             return {"code": 403, "msg": f"{e}"}
 
+    def get_result_to_files(
+            self, file_name_list: List, version: str
+    ) -> Dict:
+        """
+        :param file_name_list: file names
+        :param version: version
+        :return: List[str]
+        """
+        API_ENDPOINT = f"{self.base_url}/md_url"
+        data = {
+            "user_id": self.token,
+            "file_name_list": file_name_list,
+            "version": version,
+            "task_name": self.task_name,
+        }
+        try:
+            response = requests.post(API_ENDPOINT, data=data)
+            print(response.text)
+            if response.json()['code'] != 200:
+                return {"code": 403, "msg": response.json()['msg']}
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            return {"code": 403, "msg": f"{e}"}
+
     def get_result_to_langchain_document(
             self, type_info: List, file_name: str, version: str
     ) -> lcDocument:
@@ -163,7 +188,6 @@ class UnDatasIO:
         :param version: version
         :return: langchain_core.Document
         """
-
         result = self.get_result_type(type_info, file_name, version)['data']
         return Document(
             text=result,
@@ -171,3 +195,9 @@ class UnDatasIO:
                 "source": f"{self.task_name}_{version}_{file_name}_[{','.join(type_info)}]"
             },
         )
+
+
+if __name__ == '__main__':
+    undatasio = UnDatasIO('025ae1da7598456daa802fef7873e31b', task_name='文本解析')
+    # print(undatasio.show_version())
+    print(undatasio.get_result_to_files(['初中数学浙江中考数学真题-7.pdf'], 'v18'))

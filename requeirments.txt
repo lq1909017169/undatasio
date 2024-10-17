@@ -2,3 +2,4 @@ requests
 requests_toolbelt
 llama_index
 langchain_core
+qwen_agent"[rag]"
