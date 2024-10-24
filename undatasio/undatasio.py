@@ -1,9 +1,11 @@
 import os
-from typing import Dict, List
+from typing import List
 from langchain_core.documents import Document as lcDocument
 import requests
 from llama_index.core.schema import Document
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+from utils import Response
+import pandas as pd
 
 
 class UnDatasIO:
@@ -12,31 +14,35 @@ class UnDatasIO:
         self.task_name = task_name
         self.base_url = 'https://backend.undatas.io/api/api'
 
-    def upload(self, file_dir_path: str) -> Dict:
+    def upload(self, file_dir_path: str) -> Response:
         """
         :param file_dir_path: Upload specified folder
         :return:
         """
+        files = []
         for file_path in os.listdir(file_dir_path):
-            file_read_path = os.path.join(file_dir_path, file_path)
-            with open(file_read_path, "rb") as file:
-                fields = {
-                    "user_id": self.token,
-                    "task_name": self.task_name,
-                    "file": (file_path, file, "application/octet-stream"),
-                }
-                m = MultipartEncoder(fields=fields)
+            if file_path.endswith(".pdf"):
+                files.append(file_path)
+                file_read_path = os.path.join(file_dir_path, file_path)
+                with open(file_read_path, "rb") as file:
+                    fields = {
+                        "user_id": self.token,
+                        "task_name": self.task_name,
+                        "file": (file_path, file, "application/octet-stream"),
+                    }
+                    m = MultipartEncoder(fields=fields)
 
-                # 发送 POST 请求
-                headers = {"Content-Type": m.content_type}
-                response = requests.post(
-                    f"{self.base_url}/upload", data=m, headers=headers
-                )
-                if response.json()['code'] != 200:
-                    return {"code": 403, "msg": response.json()['msg']}
-        return {"code": 200, "msg": "upload success"}
+                    # 发送 POST 请求
+                    headers = {"Content-Type": m.content_type}
+                    response = requests.post(
+                        f"{self.base_url}/upload", data=m, headers=headers
+                    )
+                    Base_response = Response(**response.json())
+                    if Base_response.code != 200:
+                        return Base_response
+        return Response(code=200, msg="upload success", data=files)
 
-    def parser(self, file_name_list: List) -> Dict:
+    def parser(self, file_name_list: List) -> Response:
         """
         :param file_name_list: List of parsed file names
         :return:
@@ -50,14 +56,15 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            if response.json()['code'] != 200:
-                return {"code": 403, "msg": response.json()['msg']}
+            Base_response = Response(**response.json())
+            if Base_response.code != 200:
+                return Base_response
             response.raise_for_status()
-            return response.json()
+            return Base_response
         except requests.exceptions.RequestException as e:
-            return {"code": 403, "msg": f"{e}"}
+            return Response(code=403, msg=e)
 
-    def download(self, version: str) -> Dict:
+    def download(self, version: str) -> Response:
         """
         :param version: Download the specified version
         :return:
@@ -71,14 +78,15 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            if response.json()['code'] != 200:
-                return {"code": 403, "msg": response.json()['msg']}
+            Base_response = Response(**response.json())
+            if Base_response.code != 200:
+                return Base_response
             response.raise_for_status()
-            return response.json()
+            return Base_response
         except requests.exceptions.RequestException as e:
-            return {"code": 403, "msg": f"{e}"}
+            return Response(code=403, msg=e)
 
-    def show_version(self) -> Dict:
+    def show_version(self) -> Response:
         """
         :return:
         """
@@ -87,15 +95,16 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            print(response.text)
-            if response.json()['code'] != 200:
-                return {"code": 403, "msg": response.json()['msg']}
+            Base_response = Response(**response.json())
+            if Base_response.code != 200:
+                return Base_response
             response.raise_for_status()
-            return response.json()
+            Base_response.data = pd.DataFrame.from_records(Base_response.data)
+            return Base_response
         except requests.exceptions.RequestException as e:
-            return {"code": 403, "msg": f"{e}"}
+            return Response(code=403, msg=e)
 
-    def show_upload(self) -> Dict:
+    def show_upload(self) -> Response:
         """
         :return:
         """
@@ -104,12 +113,14 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            if response.json()['code'] != 200:
-                return {"code": 403, "msg": response.json()['msg']}
+            Base_response = Response(**response.json())
+
+            if Base_response.code != 200:
+                return Base_response
             response.raise_for_status()
-            return response.json()
+            return Base_response
         except requests.exceptions.RequestException as e:
-            return {"code": 403, "msg": f"{e}"}
+            return Response(code=403, msg=e)
 
     def get_result_type(
             self, type_info: List, file_name: str, version: str
@@ -130,16 +141,17 @@ class UnDatasIO:
         }
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            if response.json()['code'] != 200:
-                return {"code": 403, "msg": response.json()['msg']}
+            Base_response = Response(**response.json())
+            if Base_response.code != 200:
+                return Base_response
             response.raise_for_status()
-            return response.json()
+            return Base_response
         except requests.exceptions.RequestException as e:
-            return {"code": 403, "msg": f"{e}"}
+            return Response(code=403, msg=e)
 
     def get_result_to_files(
             self, file_name_list: List, version: str
-    ) -> Dict:
+    ) -> Response:
         """
         :param file_name_list: file names
         :param version: version
@@ -154,13 +166,13 @@ class UnDatasIO:
         }
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            print(response.text)
-            if response.json()['code'] != 200:
-                return {"code": 403, "msg": response.json()['msg']}
+            Base_response = Response(**response.json())
+            if Base_response.code != 200:
+                return Base_response
             response.raise_for_status()
-            return response.json()
+            return Base_response
         except requests.exceptions.RequestException as e:
-            return {"code": 403, "msg": f"{e}"}
+            return Response(code=403, msg=e)
 
     def get_result_to_langchain_document(
             self, type_info: List, file_name: str, version: str
@@ -171,7 +183,7 @@ class UnDatasIO:
         :param version: version
         :return: langchain_core.Document
         """
-        result = self.get_result_type(type_info, file_name, version)['data']
+        result = self.get_result_type(type_info, file_name, version).data
         return lcDocument(
             page_content=result,
             metadata={
@@ -188,16 +200,10 @@ class UnDatasIO:
         :param version: version
         :return: langchain_core.Document
         """
-        result = self.get_result_type(type_info, file_name, version)['data']
+        result = self.get_result_type(type_info, file_name, version).data
         return Document(
             text=result,
             metadata={
                 "source": f"{self.task_name}_{version}_{file_name}_[{','.join(type_info)}]"
             },
         )
-
-
-if __name__ == '__main__':
-    undatasio = UnDatasIO('025ae1da7598456daa802fef7873e31b', task_name='文本解析')
-    # print(undatasio.show_version())
-    print(undatasio.get_result_to_files(['初中数学浙江中考数学真题-7.pdf'], 'v18'))
