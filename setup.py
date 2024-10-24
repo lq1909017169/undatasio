@@ -31,8 +31,8 @@ def get_version():
         raise RuntimeError(f"无法在 '{init_py}' 中找到版本号")
 
 
-setup(name=package,  # 包名
-      version=get_version(),  # 版本号
+setup(name=package,
+      version=get_version(),
       description='python sdk for the undatasio platform',
       long_description=long_description,
       long_description_content_type='text/markdown',
@@ -45,8 +45,8 @@ setup(name=package,  # 包名
           "llama_index",
           "langchain_core",
           "pandas"
-      ],  # 依赖包会同时被安装
+      ],
       license='MIT',
-      python_requires=">=3.10",  # 项目依赖的 Python 版本
+      python_requires=">=3.10",
       packages=find_packages()
       )
