@@ -4,7 +4,7 @@ from langchain_core.documents import Document as lcDocument
 import requests
 from llama_index.core.schema import Document
 from requests_toolbelt.multipart.encoder import MultipartEncoder
-from utils import Response
+from .utils import Response
 import pandas as pd
 
 
