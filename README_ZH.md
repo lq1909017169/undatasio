@@ -2,7 +2,16 @@
 
 # UnDatasIO Python SDK 文档
 
-欢迎使用 UnDatasIO Python SDK!
+<p align="center">
+  <a href="https://undatas.io">
+    <img src="content/undatasio.png" width="100%" alt="UnDatasIO" />
+  </a>
+</p>
+
+[![License](https://img.shields.io/npm/l/mithril.svg)](https://github.com/MithrilJS/mithril.js/blob/main/LICENSE) &nbsp;
+[![Supported Python versions](https://shields.mitmproxy.org/pypi/pyversions/mitmproxy.svg)](https://pypi.python.org/pypi/mitmproxy)
+
+💫欢迎使用 UnDatasIO Python SDK!
 =================================
 
 **官方地址:** https://undatas.io/
@@ -21,7 +30,7 @@ UnDatasIO  为您提供强大的文件解析能力，让您轻松提取各种类
 ## 安装
 ------------
 
-使用  `pip`  可以轻松安装 UnDatasIO Python SDK：
+🤖使用  `pip`  可以轻松安装 UnDatasIO Python SDK：
 
 ```bash
 pip install undatasio
@@ -30,7 +39,7 @@ pip install undatasio
 ## 快速入门
 ------------
 
-让我们用一个简单的例子来说明如何使用 UnDatasIO Python SDK:
+🥇让我们用一个简单的例子来说明如何使用 UnDatasIO Python SDK:
 
 ```python
 from undatasio import UnDatasIO
@@ -78,45 +87,45 @@ else:
 ## API 参考
 ------------
 
-UnDatasIO Python SDK 提供了以下方法:
+🔥UnDatasIO Python SDK 提供了以下方法:
 
 * **``UnDatasIO(token: str, task_name: str = "")``**
 
-    - 初始化 UnDatasIO 客户端。
+    - 🛠️初始化 UnDatasIO 客户端。
         -  ``token (str)``: 您的 API 密钥，在 UnDatasIO 平台获取。
         -  ``task_name (str, 可选)``:  您为此次任务指定的名称，默认为系统生成的默认任务。
 
 * **``upload(self, file_dir_path: str) -> Dict``**
 
-    - 上传指定目录下的文件。
+    - 🔄上传指定目录下的文件。
         -  ``file_dir_path (str)``:  包含要上传文件的目录的路径。
         - 返回值:  ``Dict`` - 包含服务器响应的字典，例如： ``{'code': 200, 'msg': 'success'}``
 
 * **``parser(self, file_name_list: List) -> Dict``**
 
-    -  提交解析请求，解析指定的文件。
+    -  🌟提交解析请求，解析指定的文件。
         -  ``file_name_list (List)``:  要解析的文件名列表，例如： ``['file1.pdf', 'file2.pdf']``
         - 返回值: ``Dict`` - 包含服务器响应的字典。
 
 * **``download(self, version: str) -> Dict``**
 
-    - 下载指定版本的解析结果。
+    - 👨‍💻下载指定版本的解析结果。
         -  ``version (str)``: 要下载的版本号。
         - 返回值: ``Dict`` - 包含服务器响应的字典。
 
 * **``show_version(self) -> Dict``**
 
-    - 获取当前任务可用的版本信息。
+    - 📈获取当前任务可用的版本信息。
         - 返回值:  ``Dict`` - 包含服务器响应的字典，其中包含版本信息。
 
 * **``show_upload(self) -> Dict``**
 
-    - 获取当前任务已上传的文件列表。
+    - 🌍获取当前任务已上传的文件列表。
         - 返回值:  ``Dict`` - 包含服务器响应的字典，其中包含已上传文件的信息。
 
 * **``get_result_type(self, type_info: List, file_name: str, version: str) -> Dict``**
 
-    - 获取指定文件中特定类型的解析结果。
+    - 📊获取指定文件中特定类型的解析结果。
         -  ``type_info (List)``:  要获取的结果类型列表，例如： ``['title', 'table', 'text', 'image', 'interline_equation']``
         -  ``file_name (str)``:  目标文件名。
         -  ``version (str)``:  目标版本号。
@@ -125,7 +134,7 @@ UnDatasIO Python SDK 提供了以下方法:
 ## 错误处理
 ------------
 
-所有方法都会返回一个字典，其中包含服务器的响应信息。请务必检查 'code' 字段的值：
+📚所有方法都会返回一个字典，其中包含服务器的响应信息。请务必检查 'code' 字段的值：
 
 -  `code` 为 200 表示请求成功。
 -  `code`  不为 200  表示请求失败，您可以查看 `msg` 字段获取详细的错误信息。

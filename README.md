@@ -2,7 +2,16 @@
 
 # UnDatasIO Python SDK Documentation
 
-Welcome to the UnDatasIO Python SDK
+<p align="center">
+  <a href="https://undatas.io">
+    <img src="content/undatasio.png" width="100%" alt="UnDatasIO" />
+  </a>
+</p>
+
+[![License](https://img.shields.io/npm/l/mithril.svg)](https://github.com/MithrilJS/mithril.js/blob/main/LICENSE) &nbsp;
+[![Supported Python versions](https://shields.mitmproxy.org/pypi/pyversions/mitmproxy.svg)](https://pypi.python.org/pypi/mitmproxy)
+
+💫Welcome to the UnDatasIO Python SDK
 -------------------
 
 **Official Website:** https://undatas.io/
@@ -21,7 +30,7 @@ UnDatasIO provides powerful file parsing capabilities, allowing you to easily ex
 ## Installation
 ------------
 
-You can easily install the UnDatasIO Python SDK using `pip`:
+🤖You can easily install the UnDatasIO Python SDK using `pip`:
 ```bash
 pip install undatasio
 ```
@@ -29,7 +38,7 @@ pip install undatasio
 ## Quick Start
 ------------
 
-Let's illustrate how to use the UnDatasIO Python SDK with a simple example:
+🥇Let's illustrate how to use the UnDatasIO Python SDK with a simple example:
 
 ```python
 from undatasio import UnDatasIO
@@ -77,45 +86,45 @@ else:
 ## API Reference
 ------------
 
-The UnDatasIO Python SDK provides the following methods:
+🔥The UnDatasIO Python SDK provides the following methods:
 
 * **``UnDatasIO(token: str, task_name: str = "")``**
 
-    - Initializes the UnDatasIO client.
+    - 🛠️Initializes the UnDatasIO client.
         -  ``token (str)``: Your API key, obtained from the UnDatasIO platform.
         -  ``task_name (str, optional)``: The name you specify for this task, defaults to the system-generated default task.
 
 * **``upload(self, file_dir_path: str) -> Dict``**
 
-    - Uploads files from the specified directory.
+    - 🔄Uploads files from the specified directory.
         -  ``file_dir_path (str)``: The path to the directory containing the files to upload.
         - Returns: ``Dict`` - A dictionary containing the server response, for example: ``{'code': 200, 'msg': 'success'}``
 
 * **``parser(self, file_name_list: List) -> Dict``**
 
-    - Submits a parsing request to parse the specified files.
+    - 🌟Submits a parsing request to parse the specified files.
         -  ``file_name_list (List)``: A list of file names to parse, for example: ``['file1.pdf', 'file2.pdf']``
         - Returns: ``Dict`` - A dictionary containing the server response.
 
 * **``download(self, version: str) -> Dict``**
 
-    - Downloads the parsing results for the specified version.
+    - 👨‍💻Downloads the parsing results for the specified version.
         -  ``version (str)``: The version number to download.
         - Returns: ``Dict`` - A dictionary containing the server response.
 
 * **``show_version(self) -> Dict``**
 
-    - Retrieves available version information for the current task.
+    - 📈Retrieves available version information for the current task.
         - Returns: ``Dict`` - A dictionary containing the server response, including version information.
 
 * **``show_upload(self) -> Dict``**
 
-    - Retrieves the list of files uploaded for the current task.
+    - 🌍Retrieves the list of files uploaded for the current task.
         - Returns: ``Dict`` - A dictionary containing the server response, including information about the uploaded files.
 
 * **``get_result_type(self, type_info: List, file_name: str, version: str) -> Dict``**
 
-    - Gets specific types of parsing results from the specified file.
+    - 📊Gets specific types of parsing results from the specified file.
         -  ``type_info (List)``: A list of result types to retrieve, for example: ``['title', 'table', 'text', 'image', 'interline_equation']``
         -  ``file_name (str)``: The target file name.
         -  ``version (str)``: The target version number.
@@ -124,7 +133,7 @@ The UnDatasIO Python SDK provides the following methods:
 ## Error Handling
 ------------
 
-All methods return a dictionary containing the server's response information. Be sure to check the value of the 'code' field:
+📚All methods return a dictionary containing the server's response information. Be sure to check the value of the 'code' field:
 
 - `code` of 200 indicates a successful request.
 - `code` other than 200 indicates a failed request, and you can view the `msg` field for detailed error information.
