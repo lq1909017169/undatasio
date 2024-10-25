@@ -4,7 +4,8 @@ from langchain_core.documents import Document as lcDocument
 import requests
 from llama_index.core.schema import Document
 from requests_toolbelt.multipart.encoder import MultipartEncoder
-from .utils import Response
+# from .utils import Response
+from utils import Response
 import pandas as pd
 
 
@@ -21,9 +22,9 @@ class UnDatasIO:
         """
         files = []
         for file_path in os.listdir(file_dir_path):
-            if file_path.endswith(".pdf"):
+            file_read_path = os.path.join(file_dir_path, file_path)
+            if file_path.endswith(".pdf") and os.path.isfile(file_read_path):
                 files.append(file_path)
-                file_read_path = os.path.join(file_dir_path, file_path)
                 with open(file_read_path, "rb") as file:
                     fields = {
                         "user_id": self.token,
@@ -37,9 +38,11 @@ class UnDatasIO:
                     response = requests.post(
                         f"{self.base_url}/upload", data=m, headers=headers
                     )
-                    Base_response = Response(**response.json())
-                    if Base_response.code != 200:
+                    if response.status_code == 200:
+                        Base_response = Response(**response.json())
                         return Base_response
+                    else:
+                        return Response(code=403, msg='response status code is not 200')
         return Response(code=200, msg="upload success", data=files)
 
     def parser(self, file_name_list: List) -> Response:
@@ -56,11 +59,11 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            Base_response = Response(**response.json())
-            if Base_response.code != 200:
+            if response.status_code == 200:
+                Base_response = Response(**response.json())
                 return Base_response
-            response.raise_for_status()
-            return Base_response
+            else:
+                return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=e)
 
@@ -78,11 +81,11 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            Base_response = Response(**response.json())
-            if Base_response.code != 200:
+            if response.status_code == 200:
+                Base_response = Response(**response.json())
                 return Base_response
-            response.raise_for_status()
-            return Base_response
+            else:
+                return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=e)
 
@@ -95,12 +98,15 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            Base_response = Response(**response.json())
-            if Base_response.code != 200:
-                return Base_response
-            response.raise_for_status()
-            Base_response.data = pd.DataFrame.from_records(Base_response.data)
-            return Base_response
+            if response.status_code == 200:
+                Base_response = Response(**response.json())
+                if Base_response.code != 200:
+                    return Base_response
+                else:
+                    Base_response.data = pd.DataFrame.from_records(Base_response.data)
+                    return Base_response
+            else:
+                return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=e)
 
@@ -113,12 +119,11 @@ class UnDatasIO:
 
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            Base_response = Response(**response.json())
-
-            if Base_response.code != 200:
+            if response.status_code == 200:
+                Base_response = Response(**response.json())
                 return Base_response
-            response.raise_for_status()
-            return Base_response
+            else:
+                return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=e)
 
@@ -141,11 +146,11 @@ class UnDatasIO:
         }
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            Base_response = Response(**response.json())
-            if Base_response.code != 200:
+            if response.status_code == 200:
+                Base_response = Response(**response.json())
                 return Base_response
-            response.raise_for_status()
-            return Base_response
+            else:
+                return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=e)
 
@@ -166,11 +171,11 @@ class UnDatasIO:
         }
         try:
             response = requests.post(API_ENDPOINT, data=data)
-            Base_response = Response(**response.json())
-            if Base_response.code != 200:
+            if response.status_code == 200:
+                Base_response = Response(**response.json())
                 return Base_response
-            response.raise_for_status()
-            return Base_response
+            else:
+                return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=e)
 
@@ -207,3 +212,23 @@ class UnDatasIO:
                 "source": f"{self.task_name}_{version}_{file_name}_[{','.join(type_info)}]"
             },
         )
+
+    def ocr_2(self, file_path):
+        """
+        :param file_path: file local path
+        :return
+        """
+        url = 'http://43.130.32.191:8000/upload_parser'
+        files = {
+            "token": self.token,
+            "file": open(file_path, 'rb')
+        }
+        try:
+            response = requests.post(url, files=files)
+            if response.status_code == 200:
+                Base_response = Response(**response.json())
+                return Base_response
+            else:
+                return Response(code=403, msg='response status code is not 200')
+        except requests.exceptions.RequestException as e:
+            return Response(code=403, msg=e)
