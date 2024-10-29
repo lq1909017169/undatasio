@@ -212,7 +212,7 @@ class UnDatasIO:
             },
         )
 
-    def ocr_2(self, file_path):
+    def complex_table_parse(self, file_path):
         """
         :param file_path: file local path
         :return
