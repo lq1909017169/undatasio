@@ -217,7 +217,6 @@ class UnDatasIO:
         :param file_path: file local path
         :return
         """
-        # url = 'http://43.130.32.191:8000/upload_parser'
         url = 'http://3.19.69.227:8001/upload_parser'
         files = {
             "token": self.token,
