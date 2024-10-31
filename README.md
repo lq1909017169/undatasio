@@ -130,6 +130,14 @@ else:
         -  ``version (str)``: The target version number.
         - Returns: ``Dict`` - A dictionary containing the server response, including the parsed result data.
 
+## Colab example file.
+------------
+
+📄All of the following ipynb files are designed to run in a Colab environment. Clicking on them will allow you to run them directly in Colab.
+
+- [complex_table_to_json.ipynb](https://colab.research.google.com/drive/1QSQJ7P21vSzRK14rMZ7lJdVkf1dHzL2P?usp=sharing)
+
+
 ## Error Handling
 ------------
 
