@@ -4,7 +4,7 @@ import pandas as pd
 
 
 class Response(BaseModel):
-    code: int
+    code: int | None = None
     msg: str | None = None
     data: List | None | Dict | str | pd.DataFrame = None
 
