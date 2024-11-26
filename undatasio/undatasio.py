@@ -4,8 +4,17 @@ from langchain_core.documents import Document as lcDocument
 import requests
 from llama_index.core.schema import Document
 from requests_toolbelt.multipart.encoder import MultipartEncoder
-from utils import Response
+from typing import List, Dict
 import pandas as pd
+
+
+class Response:
+
+    def __init__(self, code: int | None = None, msg: str | None = None,
+                 data: List | None | Dict | str | pd.DataFrame = None):
+        self.code = code
+        self.msg = msg
+        self.data = data
 
 
 class UnDatasIO:
