@@ -1,11 +1,11 @@
 from typing import List, Dict
-from pydantic import BaseModel, ConfigDict
 import pandas as pd
 
 
-class Response(BaseModel):
-    code: int | None = None
-    msg: str | None = None
-    data: List | None | Dict | str | pd.DataFrame = None
+class Response:
 
-    model_config = ConfigDict(arbitrary_types_allowed=True)
+    def __init__(self, code: int | None = None, msg: str | None = None,
+                 data: List | None | Dict | str | pd.DataFrame = None):
+        self.code = code
+        self.msg = msg
+        self.data = data

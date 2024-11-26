@@ -4,7 +4,7 @@ from langchain_core.documents import Document as lcDocument
 import requests
 from llama_index.core.schema import Document
 from requests_toolbelt.multipart.encoder import MultipartEncoder
-from .utils import Response
+from utils import Response
 import pandas as pd
 
 
@@ -224,10 +224,11 @@ class UnDatasIO:
         }
         try:
             response = requests.post(url, files=files)
+            print(response.text)
             if response.status_code == 200:
                 Base_response = Response(**response.json())
                 return Base_response
             else:
                 return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
-            return Response(code=403, msg=e)
+            return Response(code=403, msg=str(e))
