@@ -1,11 +1,31 @@
-import os
-from typing import List
-from langchain_core.documents import Document as lcDocument
-import requests
-from llama_index.core.schema import Document
 from requests_toolbelt.multipart.encoder import MultipartEncoder
+from langchain_core.documents import Document as lcDocument
+from langchain_text_splitters import CharacterTextSplitter
+from llama_index.core.schema import Document
+from pydantic import BaseModel
 from typing import List, Dict
+from typing import Callable
 import pandas as pd
+import requests
+import os
+
+
+class CharTextSplitter(BaseModel):
+    separator: str
+    chunk_size: int
+    chunk_overlap: int
+    length_function: Callable[[str], int] = len,
+    is_separator_regex: bool
+
+    @classmethod
+    def create_text_splitter(cls):
+        return CharacterTextSplitter(
+            separator=cls.separator,
+            chunk_size=cls.chunk_size,
+            chunk_overlap=cls.chunk_overlap,
+            length_function=cls.length_function,
+            is_separator_regex=cls.is_separator_regex,
+        )
 
 
 class Response:
