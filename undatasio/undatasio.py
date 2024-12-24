@@ -10,24 +10,6 @@ import requests
 import os
 
 
-class CharTextSplitter(BaseModel):
-    separator: str
-    chunk_size: int
-    chunk_overlap: int
-    length_function: Callable[[str], int] = len,
-    is_separator_regex: bool
-
-    @classmethod
-    def create_text_splitter(cls):
-        return CharacterTextSplitter(
-            separator=cls.separator,
-            chunk_size=cls.chunk_size,
-            chunk_overlap=cls.chunk_overlap,
-            length_function=cls.length_function,
-            is_separator_regex=cls.is_separator_regex,
-        )
-
-
 class Response:
 
     def __init__(self, code: int | None = None, msg: str | None = None,
@@ -37,7 +19,14 @@ class Response:
         self.data = data
 
 
+# class Response(BaseModel):
+#     code: int | None = None
+#     msg: str | None = None
+#     data: List | None | Dict | str | pd.DataFrame = None
+
+
 class UnDatasIO:
+
     def __init__(self, token: str, task_name: str = ""):
         self.token = token
         self.task_name = task_name
