@@ -62,7 +62,7 @@ else:
     print(f"文件上传失败: {upload_filename_response['msg']}")
 
 # 4. 解析文件
-parse_response = client.parser(file_name_list=['示例文件.pdf'])
+parse_response = client.parser(file_name_list=['示例文件.pdf'], lang='en', parameter='fast')
 if parse_response['code'] == 200:
     print("文件解析成功")
 else:
@@ -101,10 +101,12 @@ else:
         -  ``file_dir_path (str)``:  包含要上传文件的目录的路径。
         - 返回值:  ``Dict`` - 包含服务器响应的字典，例如： ``{'code': 200, 'msg': 'success'}``
 
-* **``parser(self, file_name_list: List) -> Dict``**
+* **``parser(self, lang: str, parameter: str, file_name_list: List) -> Dict``**
 
     -  🌟提交解析请求，解析指定的文件。
-        -  ``file_name_list (List)``:  要解析的文件名列表，例如： ``['file1.pdf', 'file2.pdf']``
+        - ``lang(str)``: 输入解析语言的简称
+        - ``parameter(str)``: 填写解析的参数
+        - ``file_name_list (List)``:  要解析的文件名列表，例如： ``['file1.pdf', 'file2.pdf']``
         - 返回值: ``Dict`` - 包含服务器响应的字典。
 
 * **``download(self, version: str) -> Dict``**

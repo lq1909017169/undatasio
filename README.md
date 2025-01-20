@@ -61,7 +61,7 @@ else:
     print(f"File upload failed: {upload_filename_response['msg']}")
 
 # 4. Parse files
-parse_response = client.parser(file_name_list=['example_file.pdf'])
+parse_response = client.parser(file_name_list=['example_file.pdf'], lang='en', parameter='fast')
 if parse_response['code'] == 200:
     print("File parsing successful")
 else:
@@ -100,11 +100,13 @@ else:
         -  ``file_dir_path (str)``: The path to the directory containing the files to upload.
         - Returns: ``Dict`` - A dictionary containing the server response, for example: ``{'code': 200, 'msg': 'success'}``
 
-* **``parser(self, file_name_list: List) -> Dict``**
+* **``parser(self, lang: str, parameter: str, file_name_list: List) -> Dict``**
 
     - 🌟Submits a parsing request to parse the specified files.
-        -  ``file_name_list (List)``: A list of file names to parse, for example: ``['file1.pdf', 'file2.pdf']``
-        - Returns: ``Dict`` - A dictionary containing the server response.
+      - ``lang(str)``: The abbreviation for input parsing language
+      - ``parameter(str)``: Fill in the parsing parameters
+      - ``file_name_list (List)``: A list of file names to parse, for example: ``['file1.pdf', 'file2.pdf']``
+      - Returns: ``Dict`` - A dictionary containing the server response.
 
 * **``download(self, version: str) -> Dict``**
 

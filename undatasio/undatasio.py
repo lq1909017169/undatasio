@@ -62,8 +62,32 @@ class UnDatasIO:
                         return Response(code=403, msg='response status code is not 200')
         return Response(code=200, msg="upload success", data=files)
 
-    def parser(self, file_name_list: List) -> Response:
+    # def parser(self, file_name_list: List) -> Response:
+    #     """
+    #     :param file_name_list: List of parsed file names
+    #     :return:
+    #     """
+    #     API_ENDPOINT = f"{self.base_url}/task_return_list"
+    #     data = {
+    #         "user_id": self.token,
+    #         "task_name": self.task_name,
+    #         "fileName": file_name_list,  # 根据你的接口定义，文件名参数应该是 fileName
+    #     }
+    #
+    #     try:
+    #         response = requests.post(API_ENDPOINT, data=data)
+    #         if response.status_code == 200:
+    #             Base_response = Response(**response.json())
+    #             return Base_response
+    #         else:
+    #             return Response(code=403, msg='response status code is not 200')
+    #     except requests.exceptions.RequestException as e:
+    #         return Response(code=403, msg=e)
+
+    def parser(self, lang: str, parameter: str, file_name_list: List) -> Response:
         """
+        :param lang: The abbreviation for input parsing language[en, ch, korean, japan, chinese_cht]
+        :param parameter: Fill in the parsing parameters
         :param file_name_list: List of parsed file names
         :return:
         """
@@ -71,7 +95,9 @@ class UnDatasIO:
         data = {
             "user_id": self.token,
             "task_name": self.task_name,
-            "fileName": file_name_list,  # 根据你的接口定义，文件名参数应该是 fileName
+            "fileName": file_name_list,
+            "parameter": parameter,
+            "lang": lang,
         }
 
         try:
