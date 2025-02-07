@@ -10,7 +10,7 @@ import requests
 import os
 import json
 
-from undatasio.undatasio.utils import DictField
+from undatasio.utils import DictField
 
 
 class Response:
