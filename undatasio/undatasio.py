@@ -8,6 +8,7 @@ from typing import Callable
 import pandas as pd
 import requests
 import os
+import json
 
 from undatasio.undatasio.utils import DictField
 
@@ -257,7 +258,7 @@ class UnDatasIO:
             "file_name": file_name,
             "chunk_size": chunk_size,
             "chunk_overlap": chunk_overlap,
-            "field_list_data": field_list_data
+            "field_list_data": json.dumps(field_list_data)
         }
         try:
             response = requests.post(API_ENDPOINT, data=data)
