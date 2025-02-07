@@ -9,6 +9,8 @@ import pandas as pd
 import requests
 import os
 
+from undatasio.undatasio.utils import DictField
+
 
 class Response:
 
@@ -221,6 +223,52 @@ class UnDatasIO:
                 return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=e)
+
+    def get_structured_data(self, version, file_name, chunk_size, chunk_overlap, field_list):
+
+        field_list_data = []
+
+        def analysis_to_json(data_list, fields):
+            for field in fields:
+                if not isinstance(field, DictField):
+                    data = {
+                        'name': field.name,
+                        'rule': field.rule,
+                        'attribute': field.attribute
+                    }
+                    data_list.append(data)
+                else:
+                    data = {
+                        'name': field.name,
+                        'rule': field.rule,
+                        'attribute': field.attribute,
+                        'keys': []
+                    }
+                    data_list.append(data)
+                    analysis_to_json(data['keys'], field.keys)
+
+        analysis_to_json(field_list_data, field_list)
+
+        API_ENDPOINT = f"{self.base_url}/return_json"
+        data = {
+            "user_id": self.token,
+            "version": version,
+            "task_name": self.task_name,
+            "file_name": file_name,
+            "chunk_size": chunk_size,
+            "chunk_overlap": chunk_overlap,
+            "field_list_data": field_list_data
+        }
+        try:
+            response = requests.post(API_ENDPOINT, data=data)
+            if response.status_code == 200:
+                Base_response = Response(**response.json())
+                return Base_response
+            else:
+                return Response(code=403, msg='response status code is not 200')
+        except requests.exceptions.RequestException as e:
+            return Response(code=403, msg=e)
+
 
     def get_result_to_langchain_document(
             self, type_info: List, file_name: str, version: str

@@ -1,9 +1,11 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class Field(BaseModel):
     name: str = None
     rule: str = None
+    value: str = None
     content: str = None
 
 
@@ -25,3 +27,5 @@ class ListField(Field):
 
 class DictField(Field):
     attribute: str = 'dict'
+    keys: List
+
