@@ -2,3 +2,4 @@ requests
 requests_toolbelt
 llama_index
 langchain_core
+langchain_text_splitters
