@@ -36,24 +36,24 @@ class UnDatasIO:
         self.base_url = 'https://backend.undatas.io/api/api'
         self.allowed_extensions = {'.pdf', '.png', '.jpg', '.pptx', '.ppt', '.doc', '.docx'}
 
-    def upload(self, path: str) -> Response:
+    def upload(self, file_dir_path: str) -> Response:
         """
         Upload a single file or all files in a specified folder.
 
-        :param path: Path to a file or folder
+        :param file_dir_path: Path to a file or folder
         :return: Response object
         """
         files_to_upload = []
 
         # Check if the path is a file or a folder
-        if os.path.isfile(path):
+        if os.path.isfile(file_dir_path):
             # Single file
-            if self._is_file_allowed(path):
-                files_to_upload.append(path)
-        elif os.path.isdir(path):
+            if self._is_file_allowed(file_dir_path):
+                files_to_upload.append(file_dir_path)
+        elif os.path.isdir(file_dir_path):
             # Folder
-            for file_name in os.listdir(path):
-                file_path = os.path.join(path, file_name)
+            for file_name in os.listdir(file_dir_path):
+                file_path = os.path.join(file_dir_path, file_name)
                 if os.path.isfile(file_path) and self._is_file_allowed(file_path):
                     files_to_upload.append(file_path)
         else:
