@@ -34,58 +34,93 @@ class UnDatasIO:
         self.token = token
         self.task_name = task_name
         self.base_url = 'https://backend.undatas.io/api/api'
+        self.allowed_extensions = {'.pdf', '.png', '.jpg', '.pptx', '.ppt', '.doc', '.docx'}
 
-    def upload(self, file_dir_path: str) -> Response:
+    def upload(self, path: str) -> Response:
         """
-        :param file_dir_path: Upload specified folder
-        :return:
+        Upload a single file or all files in a specified folder.
+
+        :param path: Path to a file or folder
+        :return: Response object
         """
-        files = []
-        for file_path in os.listdir(file_dir_path):
-            file_read_path = os.path.join(file_dir_path, file_path)
-            if file_path.endswith(".pdf") and os.path.isfile(file_read_path):
-                files.append(file_path)
-                with open(file_read_path, "rb") as file:
-                    fields = {
-                        "user_id": self.token,
-                        "task_name": self.task_name,
-                        "file": (file_path, file, "application/octet-stream"),
-                    }
-                    m = MultipartEncoder(fields=fields)
+        files_to_upload = []
 
-                    # 发送 POST 请求
-                    headers = {"Content-Type": m.content_type}
-                    response = requests.post(
-                        f"{self.base_url}/upload", data=m, headers=headers
-                    )
-                    if response.status_code == 200:
-                        Base_response = Response(**response.json())
-                        return Base_response
-                    else:
-                        return Response(code=403, msg='response status code is not 200')
-        return Response(code=200, msg="upload success", data=files)
+        # Check if the path is a file or a folder
+        if os.path.isfile(path):
+            # Single file
+            if self._is_file_allowed(path):
+                files_to_upload.append(path)
+        elif os.path.isdir(path):
+            # Folder
+            for file_name in os.listdir(path):
+                file_path = os.path.join(path, file_name)
+                if os.path.isfile(file_path) and self._is_file_allowed(file_path):
+                    files_to_upload.append(file_path)
+        else:
+            return Response(code=403, msg="Invalid path: must be a file or folder")
 
-    # def parser(self, file_name_list: List) -> Response:
+        if not files_to_upload:
+            return Response(code=403, msg="No valid files to upload")
+
+        # Upload files
+        uploaded_files = []
+        for file_path in files_to_upload:
+            file_name = os.path.basename(file_path)
+            with open(file_path, "rb") as file:
+                fields = {
+                    "user_id": self.token,
+                    "task_name": self.task_name,
+                    "file": (file_name, file, "application/octet-stream"),
+                }
+                m = MultipartEncoder(fields=fields)
+                headers = {"Content-Type": m.content_type}
+                response = requests.post(f"{self.base_url}/upload", data=m, headers=headers)
+
+                if response.status_code != 200:
+                    return Response(code=403, msg=f"Failed to upload {file_name}: response status code is not 200")
+                uploaded_files.append(file_name)
+
+        return Response(code=200, msg="Upload successful", data=uploaded_files)
+
+    def _is_file_allowed(self, file_path: str) -> bool:
+        """
+        Check if the file extension is allowed.
+
+        :param file_path: Path to the file
+        :return: True if the file is allowed, False otherwise
+        """
+        _, ext = os.path.splitext(file_path)
+        return ext.lower() in self.allowed_extensions
+
+    # def upload(self, file_dir_path: str) -> Response:
     #     """
-    #     :param file_name_list: List of parsed file names
+    #     :param file_dir_path: Upload specified folder
     #     :return:
     #     """
-    #     API_ENDPOINT = f"{self.base_url}/task_return_list"
-    #     data = {
-    #         "user_id": self.token,
-    #         "task_name": self.task_name,
-    #         "fileName": file_name_list,  # 根据你的接口定义，文件名参数应该是 fileName
-    #     }
+    #     files = []
+    #     for file_path in os.listdir(file_dir_path):
+    #         file_read_path = os.path.join(file_dir_path, file_path)
+    #         if file_path.endswith(".pdf") and os.path.isfile(file_read_path):
+    #             files.append(file_path)
+    #             with open(file_read_path, "rb") as file:
+    #                 fields = {
+    #                     "user_id": self.token,
+    #                     "task_name": self.task_name,
+    #                     "file": (file_path, file, "application/octet-stream"),
+    #                 }
+    #                 m = MultipartEncoder(fields=fields)
     #
-    #     try:
-    #         response = requests.post(API_ENDPOINT, data=data)
-    #         if response.status_code == 200:
-    #             Base_response = Response(**response.json())
-    #             return Base_response
-    #         else:
-    #             return Response(code=403, msg='response status code is not 200')
-    #     except requests.exceptions.RequestException as e:
-    #         return Response(code=403, msg=e)
+    #                 # 发送 POST 请求
+    #                 headers = {"Content-Type": m.content_type}
+    #                 response = requests.post(
+    #                     f"{self.base_url}/upload", data=m, headers=headers
+    #                 )
+    #                 if response.status_code == 200:
+    #                     Base_response = Response(**response.json())
+    #                     return Base_response
+    #                 else:
+    #                     return Response(code=403, msg='response status code is not 200')
+    #     return Response(code=200, msg="upload success", data=files)
 
     def parser(self, lang: str, parameter: str, file_name_list: List) -> Response:
         """
