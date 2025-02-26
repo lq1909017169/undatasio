@@ -1,3 +1,5 @@
+import time
+
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 from langchain_core.documents import Document as lcDocument
 from langchain_text_splitters import CharacterTextSplitter
@@ -305,6 +307,46 @@ class UnDatasIO:
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=e)
 
+    def new_parser(self, file_name_list: List) -> Response:
+        """
+        :param file_name_list: List of parsed file names
+        :return:
+        """
+        API_ENDPOINT_parser = f"{self.base_url}/return_parser_pdf"
+        API_ENDPOINT_download = f"{self.base_url}/download_parser_pdf"
+        API_ENDPOINT_version = f"{self.base_url}/get_version_parser"
+        parser_data = {
+            "user_id": self.token,
+            "task_name": self.task_name,
+            "fileName": file_name_list,
+        }
+        version_data = {
+            "user_id": self.token,
+            "task_name": self.task_name
+        }
+
+        res_version = requests.post(API_ENDPOINT_version, data=version_data)
+        version = res_version.json()['data']['version']
+
+        try:
+            requests.post(API_ENDPOINT_parser, data=parser_data)
+        except:
+            pass
+        while True:
+            time.sleep(30)
+            download_data = {
+                "user_id": self.token,
+                "task_name": self.task_name,
+                "version": version
+            }
+            response = requests.post(API_ENDPOINT_download, data=download_data)
+            if response.json()['code'] == 200:
+                Base_response = Response(**response.json())
+                return Base_response
+            else:
+                print(response.json()['code'])
+                continue
+                # return Response(code=403, msg='response status code is not 200')
 
     def get_result_to_langchain_document(
             self, type_info: List, file_name: str, version: str
@@ -360,3 +402,4 @@ class UnDatasIO:
                 return Response(code=403, msg='response status code is not 200')
         except requests.exceptions.RequestException as e:
             return Response(code=403, msg=str(e))
+
